@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import useGetSet from './useGetSet';
 
 export interface QueueMethods<T> {
   add: (item: T) => void;
@@ -9,27 +9,25 @@ export interface QueueMethods<T> {
 }
 
 const useQueue = <T>(initialValue: T[] = []): QueueMethods<T> => {
-  const [state, set] = useState(initialValue);
+  const [get, set] = useGetSet(initialValue);
   return {
     add: (value) => {
       set((queue) => [...queue, value]);
     },
     remove: () => {
-      let result;
-      set(([first, ...rest]) => {
-        result = first;
-        return rest;
-      });
-      return result;
+      const [first, ...rest] = get();
+      set(rest);
+      return first;
     },
     get first() {
-      return state[0];
+      return get()[0];
     },
     get last() {
-      return state[state.length - 1];
+      const queue = get();
+      return queue[queue.length - 1];
     },
     get size() {
-      return state.length;
+      return get().length;
     },
   };
 };

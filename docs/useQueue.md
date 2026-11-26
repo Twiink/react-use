@@ -2,6 +2,8 @@
 
 React state hook implements simple FIFO queue.
 
+`remove()` synchronously returns the oldest item, or `undefined` when the queue is empty, including when several operations run in one event handler.
+
 
 ## Usage
 
